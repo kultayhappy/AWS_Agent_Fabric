@@ -2,20 +2,36 @@
 Application entry point.
 """
 
-from app.config import Config
+from app.services.chat_service import ChatService
 
 
 def main() -> None:
-    """Application entry point."""
 
-    print("=" * 50)
+    chat = ChatService()
+
+    print("=" * 60)
     print("AWS Agent Fabric")
-    print("=" * 50)
+    print("=" * 60)
 
-    print(f"Region : {Config.AWS_REGION}")
-    print(f"Model  : {Config.MODEL_ID}")
+    while True:
 
-    print("\nProject initialized successfully.")
+        question = input("\nYou: ")
+
+        if question.lower() in ["exit", "quit"]:
+
+            print("\nGoodbye!")
+
+            break
+
+        try:
+
+            answer = chat.ask(question)
+
+            print(f"\nAI: {answer}")
+
+        except Exception as error:
+
+            print(f"\nError: {error}")
 
 
 if __name__ == "__main__":
