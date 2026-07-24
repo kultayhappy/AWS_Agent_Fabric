@@ -24,7 +24,42 @@ class BedrockClient:
             region_name=Config.AWS_REGION,
         )
 
-    def generate(self, prompt: str) -> str:
+    def generate(
+    self,
+    system_prompt: str,
+    user_prompt: str,
+    ) -> str:
+        """
+        Send a request to Amazon Bedrock and return the model response.
+        """
+
+        try:
+            response = self.client.converse(
+                modelId=Config.MODEL_ID,
+                system=[
+                    {
+                        "text": system_prompt
+                    }
+                ],
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "text": user_prompt
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            return response["output"]["message"]["content"][0]["text"]
+
+        except (ClientError, BotoCoreError) as error:
+
+            raise RuntimeError(
+            f"Bedrock request failed: {error}"
+        ) from error
         """
         Send prompt to Amazon Bedrock and return model response.
         """
