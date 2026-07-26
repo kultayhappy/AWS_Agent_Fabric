@@ -126,3 +126,6 @@ dmypy.json
 
 # Sourse
 _source/
+
+# Claude AI
+.claude
